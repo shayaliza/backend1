@@ -121,7 +121,54 @@ app.get("/orders", async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Welcome to the home route!");
 });
+//user
 
+const UserSchema = new mongoose.Schema({
+  phoneNumber: String,
+  email: String,
+  location: String,
+  name: String,
+});
+
+const User = mongoose.model("User", UserSchema);
+
+app.post("/authenticate", async (req, res) => {
+  try {
+    const { phoneNumber, email, location, name } = req.body;
+
+    const existingUser = await User.findOne({
+      $or: [{ email }, { phoneNumber }],
+    });
+
+    if (existingUser) {
+      return res.status(409).json({ error: "User already exists" });
+    }
+
+    const user = new User({
+      phoneNumber,
+      email,
+      location,
+      name,
+    });
+
+    await user.save();
+
+    res.status(201).json({ message: "User registered successfully", user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.find(); // Retrieve all users from the database
+
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
