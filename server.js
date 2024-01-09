@@ -128,13 +128,23 @@ const UserSchema = new mongoose.Schema({
   email: String,
   location: String,
   name: String,
+  profileImage: String, // Assuming the profile image is stored as a URL or file path
+  licenseImage: String, // Assuming the license image is stored as a URL or file path
+  password: String, // Assuming the password is stored as plain text (Note: In production, you should hash and salt passwords)
 });
 
 const User = mongoose.model("User", UserSchema);
-
 app.post("/authenticate", async (req, res) => {
   try {
-    const { phoneNumber, email, location, name } = req.body;
+    const {
+      phoneNumber,
+      email,
+      location,
+      name,
+      profileImage,
+      licenseImage,
+      password,
+    } = req.body;
 
     const existingUser = await User.findOne({
       $or: [{ email }, { phoneNumber }],
@@ -149,6 +159,9 @@ app.post("/authenticate", async (req, res) => {
       email,
       location,
       name,
+      profileImage,
+      licenseImage,
+      password, // Note: In production, make sure to hash and salt the password before storing it
     });
 
     await user.save();
@@ -159,10 +172,9 @@ app.post("/authenticate", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 app.get("/users", async (req, res) => {
   try {
-    const users = await User.find(); // Retrieve all users from the database
-
     res.status(200).json({ users });
   } catch (error) {
     console.error(error);
