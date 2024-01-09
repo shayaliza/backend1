@@ -2,12 +2,21 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors"); // Import the cors middleware
-
 const app = express();
 const port = 5000;
 
 app.use(bodyParser.json()); // Parse JSON requests
-app.use(cors()); // Enable CORS for all routes
+// app.use(cors());
+
+// app.use(cors(corsOptions));
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 
 const mongoDBURL =
   "mongodb+srv://chai:chaiforlife@cluster0.hn1kv1u.mongodb.net/?retryWrites=true&w=majority";
@@ -146,13 +155,13 @@ app.post("/authenticate", async (req, res) => {
       password,
     } = req.body;
 
-    const existingUser = await User.findOne({
-      $or: [{ email }, { phoneNumber }],
-    });
+    // const existingUser = await User.findOne({
+    //   $or: [{ email }, { phoneNumber }],
+    // });
 
-    if (existingUser) {
-      return res.status(409).json({ error: "User already exists" });
-    }
+    // if (existingUser) {
+    //   return res.status(409).json({ error: "User already exists" });
+    // }
 
     const user = new User({
       phoneNumber,
@@ -173,14 +182,14 @@ app.post("/authenticate", async (req, res) => {
   }
 });
 
-app.get("/users", async (req, res) => {
-  try {
-    res.status(200).json({ users });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+// app.get("/users", async (req, res) => {
+//   try {
+//     res.status(200).json({ users });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
