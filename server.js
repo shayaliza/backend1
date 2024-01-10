@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors"); // Import the cors middleware
 const app = express();
 const port = 5000;
+const multer = require("multer");
 
 app.use(bodyParser.json()); // Parse JSON requests
 // app.use(cors());
@@ -17,7 +18,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+// Configure Multer for file uploads
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 const mongoDBURL =
   "mongodb+srv://chai:chaiforlife@cluster0.hn1kv1u.mongodb.net/?retryWrites=true&w=majority";
 
@@ -62,7 +65,7 @@ const OrderSchema = new mongoose.Schema({
   productName: String,
   totalCartValue: String,
   transactionId: String,
-  // variant: String,
+  accepted: Boolean,
 });
 
 const Order = mongoose.model("Order", OrderSchema);
@@ -85,7 +88,7 @@ app.post("/order", async (req, res) => {
       productName,
       totalCartValue,
       transactionId,
-      // variant,
+      accepted,
     } = req.body;
 
     const order = new Order({
@@ -103,7 +106,7 @@ app.post("/order", async (req, res) => {
       productName,
       totalCartValue,
       transactionId,
-      // variant,
+      accepted,
     });
 
     await order.save();
@@ -137,9 +140,9 @@ const UserSchema = new mongoose.Schema({
   email: String,
   location: String,
   name: String,
-  profileImage: String, // Assuming the profile image is stored as a URL or file path
-  licenseImage: String, // Assuming the license image is stored as a URL or file path
-  password: String, // Assuming the password is stored as plain text (Note: In production, you should hash and salt passwords)
+  profileImage: String,
+  licenseImage: String,
+  password: String,
 });
 
 const User = mongoose.model("User", UserSchema);
@@ -154,15 +157,6 @@ app.post("/authenticate", async (req, res) => {
       licenseImage,
       password,
     } = req.body;
-
-    // const existingUser = await User.findOne({
-    //   $or: [{ email }, { phoneNumber }],
-    // });
-
-    // if (existingUser) {
-    //   return res.status(409).json({ error: "User already exists" });
-    // }
-
     const user = new User({
       phoneNumber,
       email,
@@ -202,7 +196,47 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+//uoload
 
+// Create a Mongoose model for images
+const Image = mongoose.model("Image", { data: Buffer, contentType: String });
+
+app.post("/api/upload", upload.single("file"), async (req, res) => {
+  try {
+    const image = new Image({
+      data: req.file.buffer,
+      contentType: req.file.mimetype,
+    });
+
+    await image.save();
+
+    res.status(201).json({ message: "Image uploaded successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put("/order/:orderId", async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const updatedOrder = await Order.findOneAndUpdate(
+      { _id: orderId },
+      { accepted: true },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.json({ message: "Order accepted successfully", order: updatedOrder });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
