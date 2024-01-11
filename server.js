@@ -237,6 +237,19 @@ app.put("/order/:orderId", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+let pagal = { id: 1, name: "John Doe", favoriteColor: "Blue" };
+
+// PUT API endpoint to update user's favorite color
+app.put("/updateFavoriteColor", (req, res) => {
+  const { favoriteColor } = req.body;
+
+  // Update the user's favorite color
+  pagal.favoriteColor = favoriteColor;
+
+  // Send the updated user object as the response
+  res.json({ message: "Favorite color updated successfully", pagal });
+});
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
