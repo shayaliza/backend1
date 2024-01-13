@@ -9,7 +9,7 @@ const orderRoutes = require("./Routes/orderRouter");
 const userRoutes = require("./Routes/userRouter");
 //@CORS setup///////////////////
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://digistall.in",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
