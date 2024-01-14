@@ -7,9 +7,14 @@ const app = express();
 //@Local Import/////////////////
 const orderRoutes = require("./Routes/orderRouter");
 const userRoutes = require("./Routes/userRouter");
+const gotanRoutes = require("./Routes/gotanRouter");
 //@CORS setup///////////////////
 const corsOptions = {
-  origin: "https://digistall.in",
+  origin: [
+    "https://digistall.in",
+    "http://localhost:300s0",
+    "https://gotan.in",
+  ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
@@ -98,7 +103,8 @@ app.get("/", (req, res) => {
 
 //@Local Middleware///////////////////////////////
 app.use("/api/orders", orderRoutes);
-app.use("/api/users", userRoutes); // Use user routes
+app.use("/api/users", userRoutes);
+app.use("/api", gotanRoutes);
 //@Starting Server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
