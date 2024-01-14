@@ -10,11 +10,7 @@ const userRoutes = require("./Routes/userRouter");
 const gotanRoutes = require("./Routes/gotanRouter");
 //@CORS setup///////////////////
 const corsOptions = {
-  origin: [
-    "https://digistall.in",
-    "http://localhost:300s0",
-    "https://gotan.in",
-  ],
+  origin: ["https://digistall.in", "http://localhost:3000", "https://gotan.in"],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
