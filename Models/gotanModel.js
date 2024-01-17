@@ -7,6 +7,7 @@ const GotanSchema = new mongoose.Schema({
   subdomain: String,
   businessName: String,
   businessAddress: String,
+  password: String,
 });
 
 const Gotan = mongoose.model("FormData", GotanSchema);

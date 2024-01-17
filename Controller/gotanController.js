@@ -1,8 +1,15 @@
 const Gotan = require("../Models/gotanModel");
 
 exports.GotanData = async (req, res) => {
-  const { name, email, phone, subdomain, businessName, businessAddress } =
-    req.body;
+  const {
+    name,
+    email,
+    phone,
+    subdomain,
+    businessName,
+    businessAddress,
+    password,
+  } = req.body;
 
   const newData = new Gotan({
     name,
@@ -11,6 +18,7 @@ exports.GotanData = async (req, res) => {
     subdomain,
     businessName,
     businessAddress,
+    password,
   });
 
   try {

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
+
 //@Local Import/////////////////
 const orderRoutes = require("./Routes/orderRouter");
 const userRoutes = require("./Routes/userRouter");
@@ -16,8 +17,10 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 //@ENV///////////////////////////
+
 const port = 5000;
 //@Global Middleware//////////////
+
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
@@ -54,48 +57,6 @@ process.on("SIGINT", () => {
 app.get("/", (req, res) => {
   res.send("Welcome to the home route!");
 });
-// app.put("/updateAcceptedOrders/:email", async (req, res) => {
-//   try {
-//     const { email } = req.params;
-//     const { acceptedOrders } = req.body;
-
-//     const user = await User.findOneAndUpdate(
-//       { email },
-//       { $push: { acceptedOrders: { $each: acceptedOrders } } },
-//       { new: true }
-//     );
-
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
-
-//     res
-//       .status(200)
-//       .json({ message: "Accepted orders updated successfully", user });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
-
-// app.get("/getAcceptedOrders/:email", async (req, res) => {
-//   try {
-//     const { email } = req.params;
-
-//     const user = await User.findOne({ email });
-
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
-
-//     const acceptedOrders = user.acceptedOrders || [];
-
-//     res.status(200).json({ acceptedOrders });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
 
 //@Local Middleware///////////////////////////////
 app.use("/api/orders", orderRoutes);
