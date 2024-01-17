@@ -6,6 +6,7 @@ router.post("/", orderController.placeOrder); //seller side se data aane ke liye
 router.get("/", orderController.getOrders); //sare orders ka list
 router.get("/:orderId", orderController.getOrder); //detals of 1 order
 router.put("/:orderId", orderController.acceptOrder); //boolean accepted
+router.get("/seller/:orderId", orderController.getRiderdetails);
 router.put("/:orderId/rider-details", orderController.updateRiderDetails); //rider details sent to seller
 router.get("/getAcceptedOrders/:email", orderController.getAcceptedOrders);
 router.put(

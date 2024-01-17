@@ -19,6 +19,7 @@ module.exports = {
         productName,
         totalCartValue,
         transactionId,
+        sellerAddress,
         accepted,
         riderDetails,
       } = req.body;
@@ -38,6 +39,7 @@ module.exports = {
         productName,
         totalCartValue,
         transactionId,
+        sellerAddress,
         accepted,
         riderDetails,
       });
@@ -68,6 +70,22 @@ module.exports = {
       const { orderId } = req.params;
 
       const order = await Order.findById(orderId);
+
+      if (!order) {
+        return res.status(404).json({ error: "Order not found" });
+      }
+
+      res.status(200).json({ order });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  getRiderdetails: async (req, res) => {
+    try {
+      const orderId = req.params.orderId;
+
+      const order = await Order.findOne({ orderId });
 
       if (!order) {
         return res.status(404).json({ error: "Order not found" });

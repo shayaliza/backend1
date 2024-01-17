@@ -14,6 +14,7 @@ const OrderSchema = new mongoose.Schema({
   productName: String,
   totalCartValue: String,
   transactionId: String,
+  sellerAddress: String,
   accepted: Boolean,
   riderDetails: [],
 });
