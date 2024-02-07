@@ -46,7 +46,11 @@ const addOrder = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Order submitted successfully", orderId: newOrder._id });
+      .json({
+        message: "Order submitted successfully",
+        orderId: newOrder._id,
+        deliverBy: newOrder.deliverBy,
+      });
   } catch (error) {
     console.error("Error saving order:", error);
     res.status(500).json({ error: "Internal Server Error" });

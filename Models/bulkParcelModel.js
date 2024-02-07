@@ -9,6 +9,7 @@ const BulkParcelchema = new mongoose.Schema({
   pickupTime: String,
   weight: String,
   expectedPrice: String,
+  deliverBy: String,
   accepted: Boolean,
   riderDetails: [],
   sellerAccepted: Boolean,

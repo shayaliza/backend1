@@ -8,6 +8,7 @@ const BookRiderchema = new mongoose.Schema({
   deliveryAddress: String,
   pickupTime: String,
   accepted: Boolean,
+  deliverBy: String,
   riderDetails: [],
 });
 
