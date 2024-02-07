@@ -1,16 +1,27 @@
+// const orderController = require("../Controller/orderController");
+
 const express = require("express");
 const router = express.Router();
-const orderController = require("../Controller/orderController");
+const {
+  httpPlaceOrder,
+  httpGetOrders,
+  httpGetOrder,
+  httpGetRiderdetails,
+  httpGetAcceptedOrders,
+  httpAcceptOrder,
+  httpUpdateRiderDetails,
+  httpUpdateAcceptedOrders,
+  httpNotAcceptedBySeller,
+} = require("../Controller/orderController");
 
-router.post("/", orderController.placeOrder); //seller side se data aane ke liye
-router.get("/", orderController.getOrders); //sare orders ka list
-router.get("/:orderId", orderController.getOrder); //detals of 1 order
-router.put("/:orderId", orderController.acceptOrder); //boolean accepted
-router.get("/seller/:orderId", orderController.getRiderdetails);
-router.put("/:orderId/rider-details", orderController.updateRiderDetails); //rider details sent to seller
-router.get("/getAcceptedOrders/:email", orderController.getAcceptedOrders);
-router.put(
-  "/updateAcceptedOrders/:email",
-  orderController.updateAcceptedOrders
-);
+router.post("/", httpPlaceOrder);
+router.get("/", httpGetOrders);
+router.get("/:orderId", httpGetOrder);
+router.get("/seller/:orderId", httpGetRiderdetails);
+router.get("/getAcceptedOrders/:email", httpGetAcceptedOrders);
+router.put("/:orderId", httpAcceptOrder);
+router.put("/:orderId/rider-details", httpUpdateRiderDetails);
+router.put("/updateAcceptedOrders/:email", httpUpdateAcceptedOrders);
+router.post("/:orderId/no", httpNotAcceptedBySeller);
+
 module.exports = router;

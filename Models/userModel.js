@@ -11,6 +11,6 @@ const UserSchema = new mongoose.Schema({
   acceptedOrders: [{}],
 });
 
-const User = mongoose.model("User", UserSchema);
+const Rider = mongoose.model("Rider", UserSchema);
 
-module.exports = User;
+module.exports = Rider;
