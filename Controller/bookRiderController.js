@@ -90,12 +90,12 @@ const orderDetails = async (req, res) => {
 sellerAccept = async (req, res) => {
   const { id } = req.params;
   try {
-    const BookRider = await BookRider.findById(id);
-    if (!BookRider) {
+    const bookRider = await BookRider.findById(id);
+    if (!bookRider) {
       return res.status(404).json({ error: "BookRider not found" });
     }
-    BookRider.sellerAccepted = true;
-    await BookRider.save();
+    bookRider.sellerAccepted = true;
+    await bookRider.save();
     return res
       .status(200)
       .json({ message: "Seller accepted updated successfully" });

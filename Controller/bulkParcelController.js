@@ -77,7 +77,7 @@ sellerAccept = async (req, res) => {
       return res.status(404).json({ error: "BulkParcel not found" });
     }
     // Update the sellerAccepted field to true
-    // console.log("jdf");
+    console.log("jdf");
     bulkParcel.sellerAccepted = true;
     // Save the updated document
     await bulkParcel.save();
