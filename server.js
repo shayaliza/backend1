@@ -82,7 +82,7 @@ app.use("/api", gotanRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/bookrider", BookRider);
 app.use("/api/bulkparcel", BulkParcel);
-app.use("/api/ruralrider", RuralRider);
+app.use("/api/veteran", RuralRider);
 
 //@Starting Server
 app.listen(port, () => {

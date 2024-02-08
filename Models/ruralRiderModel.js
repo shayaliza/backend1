@@ -1,15 +1,15 @@
 const mongoose = require("mongoose");
 
-const RuralRiderSchema = new mongoose.Schema({
+const VeteranSchema = new mongoose.Schema({
   sellerName: String,
   sellerPhone: String,
-  pickupAddress: String,
-  deliveryAddress: String,
-  pickupTime: String,
+  sellerAddress: String,
   accepted: Boolean,
+  sellerAccepted: Boolean,
+  photoUrl: String,
   riderDetails: [],
 });
 
-const RuralRider = mongoose.model("RuralRider", RuralRiderSchema);
+const RuralRider = mongoose.model("Veteran", VeteranSchema);
 
 module.exports = RuralRider;

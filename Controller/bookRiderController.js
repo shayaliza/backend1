@@ -1,5 +1,6 @@
 const BookRider = require("../Models/bookRiderModel");
 const BulkParcel = require("../Models/bulkParcelModel");
+const nodemailer = require("nodemailer");
 
 getOrder = async (req, res) => {
   try {
@@ -10,8 +11,6 @@ getOrder = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-const nodemailer = require("nodemailer");
 
 const addOrder = async (req, res) => {
   try {
