@@ -1,20 +1,6 @@
 const BookRider = require("../Models/bookRiderModel");
 const BulkParcel = require("../Models/bulkParcelModel");
 
-// const addOrder = async (req, res) => {
-//   try {
-//     const orderData = req.body;
-//     const newOrder = new BookRider(orderData);
-//     await newOrder.save();
-//     res
-//       .status(201)
-//       .json({ message: "Order submitted successfully", orderId: newOrder._id });
-//   } catch (error) {
-//     console.error("Error saving order:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
 getOrder = async (req, res) => {
   try {
     const orders = await BookRider.find();
@@ -101,7 +87,25 @@ const orderDetails = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+sellerAccept = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const bulkParcel = await BookRider.findById(id);
+    if (!bulkParcel) {
+      return res.status(404).json({ error: "BulkParcel not found" });
+    }
+    BookRider.sellerAccepted = true;
+    await BookRider.save();
+    return res
+      .status(200)
+      .json({ message: "Seller accepted updated successfully" });
+  } catch (error) {
+    console.error("Error updating sellerAccepted:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
 module.exports = {
+  sellerAccept,
   orderDetails,
   getOrder,
   addOrder,

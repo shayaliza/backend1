@@ -7,9 +7,11 @@ const BookRiderchema = new mongoose.Schema({
   pickupAddress: String,
   deliveryAddress: String,
   pickupTime: String,
+  expectedPrice: String,
   accepted: Boolean,
   deliverBy: String,
   riderDetails: [],
+  sellerAccepted: Boolean,
 });
 
 const BookRider = mongoose.model("BookRider", BookRiderchema);

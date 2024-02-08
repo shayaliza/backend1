@@ -1,19 +1,5 @@
 const BulkParcel = require("../Models/bulkParcelModel");
 
-// const addOrder = async (req, res) => {
-//   try {
-//     const orderData = req.body;
-//     const newOrder = new BulkParcel(orderData);
-//     await newOrder.save();
-//     res
-//       .status(201)
-//       .json({ message: "Order submitted successfully", orderId: newOrder._id });
-//   } catch (error) {
-//     console.error("Error saving order:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
 getOrder = async (req, res) => {
   try {
     const orders = await BulkParcel.find();
@@ -44,13 +30,10 @@ const addOrder = async (req, res) => {
         `Best regards,\nGotan.in`
     );
 
-    res
-      .status(201)
-      .json({
-        message: "Order submitted successfully",
-        orderId: newOrder._id,
-        deliverBy: newOrder.deliverBy,
-      });
+    res.status(201).json({
+      message: "Order submitted successfully",
+      orderId: newOrder._id,
+    });
   } catch (error) {
     console.error("Error saving order:", error);
     res.status(500).json({ error: "Internal Server Error" });
