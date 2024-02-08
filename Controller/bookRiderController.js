@@ -90,9 +90,9 @@ const orderDetails = async (req, res) => {
 sellerAccept = async (req, res) => {
   const { id } = req.params;
   try {
-    const bulkParcel = await BookRider.findById(id);
-    if (!bulkParcel) {
-      return res.status(404).json({ error: "BulkParcel not found" });
+    const BookRider = await BookRider.findById(id);
+    if (!BookRider) {
+      return res.status(404).json({ error: "BookRider not found" });
     }
     BookRider.sellerAccepted = true;
     await BookRider.save();
