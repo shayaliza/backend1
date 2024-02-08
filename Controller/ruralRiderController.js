@@ -94,8 +94,22 @@ sellerAccept = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+const orderDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
 
+    const bookVeteran = await Veteran.findById(id);
+
+    const responseData = bookVeteran;
+
+    res.status(200).json(responseData);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 module.exports = {
+  orderDetails,
   sellerAccept,
   getOrder,
   addOrder,
