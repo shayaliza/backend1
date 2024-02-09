@@ -1,18 +1,5 @@
 const Veteran = require("../Models/ruralRiderModel");
 const nodemailer = require("nodemailer");
-
-// const addOrder = async (req, res) => {
-//   try {
-//     const orderData = req.body;
-//     const newOrder = new Veteran(orderData);
-//     await newOrder.save();
-//     res.status(201).json({ message: "Order submitted successfully" });
-//   } catch (error) {
-//     console.error("Error saving order:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
 getOrder = async (req, res) => {
   try {
     const orders = await Veteran.find();
@@ -108,7 +95,57 @@ const orderDetails = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+const getUnacceptedVetOrders = async (req, res) => {
+  try {
+    const unacceptedOrders = await Veteran.find({
+      $or: [{ sellerAccepted: false }, { sellerAccepted: { $exists: false } }],
+    });
+    res.status(200).json(unacceptedOrders);
+  } catch (error) {
+    console.error("Error fetching unaccepted orders:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const editVetiderOrder = async (req, res) => {
+  const { id } = req.params;
+  const { deliverBy, expectedPrice, riderDetails } = req.body;
+  try {
+    const veteran = await Veteran.findById(id);
+    if (!veteran) {
+      return res.status(404).json({ error: "BookRider not found" });
+    }
+    if (deliverBy) {
+      veteran.deliverBy = deliverBy;
+    }
+    if (expectedPrice) {
+      veteran.expectedPrice = expectedPrice;
+    }
+    if (
+      riderDetails &&
+      Array.isArray(riderDetails) &&
+      riderDetails.length >= 2
+    ) {
+      // Update riderDetails[0] and riderDetails[1] if they exist
+      if (riderDetails[0]) {
+        veteran.riderDetails[0] = riderDetails[0];
+      }
+      if (riderDetails[1]) {
+        veteran.riderDetails[1] = riderDetails[1];
+      }
+    }
+    await veteran.save();
+    return res
+      .status(200)
+      .json({ message: "BookRider order updated successfully" });
+  } catch (error) {
+    console.error("Error updating BookRider order:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
 module.exports = {
+  getUnacceptedVetOrders,
+  editVetiderOrder,
   orderDetails,
   sellerAccept,
   getOrder,

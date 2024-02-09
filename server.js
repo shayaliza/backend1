@@ -13,6 +13,7 @@ const sellerRoutes = require("./Routes/sellerRouter");
 const BookRider = require("./Routes/bookRiderRouter");
 const BulkParcel = require("./Routes/bulkParcelRouter");
 const RuralRider = require("./Routes/ruralRiderRouter");
+const GotanAdmin = require("./Routes/gotanAdminRouter");
 //@CORS setup///////////////////
 const corsOptions = {
   origin: [
@@ -83,6 +84,7 @@ app.use("/api/seller", sellerRoutes);
 app.use("/api/bookrider", BookRider);
 app.use("/api/bulkparcel", BulkParcel);
 app.use("/api/veteran", RuralRider);
+app.use("/api/admin", GotanAdmin);
 
 //@Starting Server
 app.listen(port, () => {

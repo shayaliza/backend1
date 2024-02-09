@@ -103,7 +103,58 @@ sellerAccept = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+const getUnacceptedBookRiderOrders = async (req, res) => {
+  try {
+    const unacceptedOrders = await BookRider.find({
+      $or: [{ sellerAccepted: false }, { sellerAccepted: { $exists: false } }],
+    });
+    res.status(200).json(unacceptedOrders);
+  } catch (error) {
+    console.error("Error fetching unaccepted orders:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+const editBookRiderOrder = async (req, res) => {
+  const { id } = req.params;
+  const { deliverBy, expectedPrice, riderDetails } = req.body;
+  try {
+    const bookRider = await BookRider.findById(id);
+    if (!bookRider) {
+      return res.status(404).json({ error: "BookRider not found" });
+    }
+    if (deliverBy) {
+      bookRider.deliverBy = deliverBy;
+    }
+    if (expectedPrice) {
+      bookRider.expectedPrice = expectedPrice;
+    }
+    // Update riderDetails if present in the request body
+    if (
+      riderDetails &&
+      Array.isArray(riderDetails) &&
+      riderDetails.length >= 2
+    ) {
+      // Update riderDetails[0] and riderDetails[1] if they exist
+      if (riderDetails[0]) {
+        bookRider.riderDetails[0] = riderDetails[0];
+      }
+      if (riderDetails[1]) {
+        bookRider.riderDetails[1] = riderDetails[1];
+      }
+    }
+
+    await bookRider.save();
+    return res
+      .status(200)
+      .json({ message: "BookRider order updated successfully" });
+  } catch (error) {
+    console.error("Error updating BookRider order:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
 module.exports = {
+  editBookRiderOrder,
+  getUnacceptedBookRiderOrders,
   sellerAccept,
   orderDetails,
   getOrder,
