@@ -78,6 +78,23 @@ const httpGetOrder = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+const httpGetOrdernew = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await Order.findOne({ orderId: orderId }); // Correct usage of findOne
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.status(200).json({ order });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 const httpGetRiderdetails = async (req, res) => {
   try {
     const orderId = req.params.orderId;
@@ -278,11 +295,108 @@ const httpNotAcceptedBySeller = async (req, res) => {
   }
 };
 
+// Update order process API endpoint
+// const OrderProcess = async (req, res) => {
+//   try {
+//     const { orderId } = req.params;
+//     const { orderProcess } = req.body;
+
+//     // Find the order by orderId
+//     const order = await Order.findOne({ orderId });
+
+//     if (!order) {
+//       return res.status(404).json({ message: "Order not found" });
+//     }
+
+//     // Determine the next order process based on the current one
+//     let nextOrderProcess;
+//     switch (orderProcess) {
+//       case "Order Accepted":
+//         nextOrderProcess = "On the way to Seller";
+//         break;
+//       case "On the way to Seller":
+//         nextOrderProcess = "Parcel Accepted by Seller";
+//         break;
+//       case "Parcel Accepted by Seller":
+//         nextOrderProcess = "On the Way to Customer";
+//         break;
+//       case "On the Way to Customer":
+//         nextOrderProcess = "Customer Accepted";
+//         break;
+//       default:
+//         return res.status(400).json({ message: "Invalid order process" });
+//     }
+
+//     // Update orderProcess field
+//     order.orderProcess = nextOrderProcess;
+
+//     // Save updated order
+//     await order.save();
+
+//     return res.json({ message: "Order process updated successfully", order });
+//   } catch (err) {
+//     console.error(err.message);
+//     return res.status(500).json({ message: "Server Error" });
+//   }
+// };
+const OrderProcess = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { orderProcess } = req.body;
+
+    // Find the order by orderId
+    let order = await Order.findOne({ orderId });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    // If orderProcess field does not exist, set it to default value
+    if (!order.orderProcess) {
+      order.orderProcess = "Order Accepted";
+    }
+
+    // Determine the next order process based on the current one
+    let nextOrderProcess;
+    switch (
+      order.orderProcess // Use order.orderProcess instead of orderProcess
+    ) {
+      case "Order Accepted":
+        nextOrderProcess = "On the way to Seller";
+        break;
+      case "On the way to Seller":
+        nextOrderProcess = "Parcel Accepted by Seller";
+        break;
+      case "Parcel Accepted by Seller":
+        nextOrderProcess = "On the Way to Customer";
+        break;
+      case "On the Way to Customer":
+        nextOrderProcess = "Customer Accepted";
+        break;
+      default:
+        return res.status(400).json({ message: "Invalid order process" });
+    }
+
+    // Update orderProcess field
+    order.orderProcess = nextOrderProcess;
+
+    // Save updated order
+    await order.save();
+
+    return res.json({ message: "Order process updated successfully", order });
+  } catch (err) {
+    console.error(err.message);
+    return res.status(500).json({ message: "Server Error" });
+  }
+};
+
 module.exports = {
+  OrderProcess,
   httpAcceptOrder,
   httpUpdateAcceptedOrders,
   httpUpdateRiderDetails,
   httpGetOrder,
+  httpGetOrdernew,
   httpGetOrders,
   httpPlaceOrder,
   httpGetRiderdetails,

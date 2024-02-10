@@ -17,6 +17,17 @@ const riderOrderSchema = new mongoose.Schema({
   sellerAddress: String,
   accepted: Boolean,
   riderDetails: [],
+  orderProcess: {
+    type: String,
+    enum: [
+      "Order Accepted",
+      "On the way to Seller",
+      "Parcel Accepted by Seller",
+      "On the Way to Customer",
+      "Customer Accepted",
+    ],
+    default: "Order Accepted",
+  },
 });
 
 const riderOrder = mongoose.model("riderOrder", riderOrderSchema);

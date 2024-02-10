@@ -77,8 +77,8 @@ app.get("/", (req, res) => {
 });
 
 //@Local Middleware///////////////////////////////
-app.use("/api/orders", orderRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/riderOrders", orderRoutes);
+app.use("/api/riders", userRoutes);
 app.use("/api", gotanRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api/bookrider", BookRider);
