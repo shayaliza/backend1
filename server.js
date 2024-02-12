@@ -15,24 +15,26 @@ const BulkParcel = require("./Routes/bulkParcelRouter");
 const RuralRider = require("./Routes/ruralRiderRouter");
 const GotanAdmin = require("./Routes/gotanAdminRouter");
 //@CORS setup///////////////////
-const corsOptions = {
-  origin: [
-    "https://digistall.in",
-    "https://admin.digistall.in",
-    "http://localhost:3000",
-    "https://gotan.in",
-    // "http://ajmer.localhost:3000",
-  ],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  optionsSuccessStatus: 204,
-};
+// const corsOptions = {
+//   origin: [
+//     "https://digistall.in",
+//     "https://admin.digistall.in",
+//     "http://localhost:3000",
+//     "https://gotan.in",
+//     // "http://ajmer.localhost:3000",
+//   ],
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   credentials: true,
+//   optionsSuccessStatus: 204,
+// };
 //@ENV///////////////////////////
 
 const port = 5000;
 //@Global Middleware//////////////
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
+
 app.use(bodyParser.json());
 
 //@MongoSetup///////////////////////////////////////////////////////
