@@ -1,5 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+
+const upload = multer();
+
 const {
   addOrder,
   getOrder,
@@ -9,7 +13,9 @@ const {
   editVetiderOrder,
 } = require("../Controller/ruralRiderController");
 
-router.post("/", addOrder);
+// router.post("/", addOrder);
+router.post("/", upload.single("photoUrl"), addOrder);
+
 router.get("/", getOrder);
 router.put("/sellerAccept/:id", sellerAccept);
 router.get("/orderDetails/:id", orderDetails);

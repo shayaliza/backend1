@@ -14,6 +14,7 @@ const BookRider = require("./Routes/bookRiderRouter");
 const BulkParcel = require("./Routes/bulkParcelRouter");
 const RuralRider = require("./Routes/ruralRiderRouter");
 const GotanAdmin = require("./Routes/gotanAdminRouter");
+const Img = require("./Routes/imgRouter");
 //@CORS setup///////////////////
 // const corsOptions = {
 //   origin: [
@@ -87,6 +88,7 @@ app.use("/api/bookrider", BookRider);
 app.use("/api/bulkparcel", BulkParcel);
 app.use("/api/veteran", RuralRider);
 app.use("/api/admin", GotanAdmin);
+app.use("/api", Img);
 
 //@Starting Server
 app.listen(port, () => {

@@ -5,6 +5,7 @@ const VeteranSchema = new mongoose.Schema({
   sellerPhone: String,
   sellerEmail: String,
   sellerAddress: String,
+  problem: String,
   accepted: Boolean,
   sellerAccepted: Boolean,
   photoUrl: String,

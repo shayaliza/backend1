@@ -1,5 +1,7 @@
 const Veteran = require("../Models/ruralRiderModel");
 const nodemailer = require("nodemailer");
+const { uploadImage } = require("../Models/imgModel");
+
 getOrder = async (req, res) => {
   try {
     const orders = await Veteran.find();
@@ -13,20 +15,24 @@ getOrder = async (req, res) => {
 const addOrder = async (req, res) => {
   try {
     const orderData = req.body;
-    const newOrder = new Veteran(orderData);
-    await newOrder.save();
+    if (req.file) {
+      // console.log("hello");
+      orderData.photoUrl = await uploadImage(req.file.buffer);
+    }
 
-    // Send email notification to the seller
-    sendEmailNotification(
-      orderData.sellerEmail,
-      "Order Confirmation",
-      `Hi ${orderData.sellerName},\n\n` +
-        `We have received your order. Thank you for choosing us!\n\n` +
-        `To track your order, click on the following link: https://Goton.in/orders/${newOrder._id}\n\n` +
-        `Your Order ID is: ${newOrder._id}\n\n` +
-        `If you have any questions or concerns, feel free to reach out to us.\n\n` +
-        `Best regards,\nGotan.in`
-    );
+    const newOrder = new Veteran(orderData);
+
+    await newOrder.save();
+    // sendEmailNotification(
+    //   orderData.sellerEmail,
+    //   "Order Confirmation",
+    //   `Hi ${orderData.sellerName},\n\n` +
+    //     `We have received your order. Thank you for choosing us!\n\n` +
+    //     `To track your order, click on the following link: https://Goton.in/orders/${newOrder._id}\n\n` +
+    //     `Your Order ID is: ${newOrder._id}\n\n` +
+    //     `If you have any questions or concerns, feel free to reach out to us.\n\n` +
+    //     `Best regards,\nGotan.in`
+    // );
 
     res
       .status(201)
@@ -37,7 +43,6 @@ const addOrder = async (req, res) => {
   }
 };
 
-// Function to send email notification
 const sendEmailNotification = (recipientEmail, subject, message) => {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
