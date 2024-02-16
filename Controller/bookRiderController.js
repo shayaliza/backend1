@@ -86,6 +86,15 @@ const orderDetails = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+getSellerAcceptedTrue = async (req, res) => {
+  try {
+    const orders = await BookRider.find({ sellerAccepted: true });
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching orders with sellerAccept true:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 sellerAccept = async (req, res) => {
   const { id } = req.params;
   try {
@@ -159,4 +168,5 @@ module.exports = {
   orderDetails,
   getOrder,
   addOrder,
+  getSellerAcceptedTrue,
 };

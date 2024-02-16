@@ -89,6 +89,79 @@ app.use("/api/bulkparcel", BulkParcel);
 app.use("/api/veteran", RuralRider);
 app.use("/api/admin", GotanAdmin);
 app.use("/api", Img);
+//total visit
+// let totalVisits = 0;
+
+// app.use((req, res, next) => {
+//   totalVisits++;
+//   next();
+// });
+
+// app.get("/counter", (req, res) => {
+//   res.json({ count: totalVisits });
+// });
+
+// Middleware to increment visit count for every request
+// Create a schema for total visit count
+const totalVisitSchema = new mongoose.Schema({
+  count: {
+    type: Number,
+    default: 0,
+  },
+});
+
+// Create a model based on the schema
+const TotalVisit = mongoose.model("TotalVisit", totalVisitSchema);
+app.use(async (req, res, next) => {
+  try {
+    // Fetch total visit count from the database
+    let totalVisit = await TotalVisit.findOne();
+    if (!totalVisit) {
+      totalVisit = new TotalVisit();
+    }
+    totalVisit.count++;
+    await totalVisit.save();
+    next();
+  } catch (error) {
+    console.error("Error incrementing total visit count:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Endpoint to get total visit count
+app.get("/counter", async (req, res) => {
+  try {
+    // Fetch total visit count from the database
+    const totalVisit = await TotalVisit.findOne();
+    res.json({ count: totalVisit ? totalVisit.count : 0 });
+  } catch (error) {
+    console.error("Error fetching total visit count:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+//@daily Visit
+let dailyVisits = {};
+
+app.use((req, res, next) => {
+  const today = new Date().toISOString().split("T")[0];
+  if (!dailyVisits[today]) {
+    dailyVisits[today] = 1;
+  } else {
+    dailyVisits[today]++;
+  }
+  next();
+});
+
+app.get("/today-visits", (req, res) => {
+  const today = new Date().toISOString().split("T")[0];
+  const todayVisits = dailyVisits[today] || 0;
+  res.json({ count: todayVisits });
+});
+
+setInterval(() => {
+  const today = new Date().toISOString().split("T")[0];
+  dailyVisits[today] = 0;
+}, 24 * 60 * 60 * 1000);
 
 //@Starting Server
 app.listen(port, () => {

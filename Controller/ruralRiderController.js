@@ -1,6 +1,15 @@
 const Veteran = require("../Models/ruralRiderModel");
 const nodemailer = require("nodemailer");
 const { uploadImage } = require("../Models/imgModel");
+const getSellerAcceptedTrue = async (req, res) => {
+  try {
+    const orders = await Veteran.find({ sellerAccepted: true });
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching orders with sellerAccept true:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 getOrder = async (req, res) => {
   try {
@@ -155,4 +164,5 @@ module.exports = {
   sellerAccept,
   getOrder,
   addOrder,
+  getSellerAcceptedTrue,
 };

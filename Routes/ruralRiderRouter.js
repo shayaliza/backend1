@@ -11,6 +11,7 @@ const {
   orderDetails,
   getUnacceptedVetOrders,
   editVetiderOrder,
+  getSellerAcceptedTrue,
 } = require("../Controller/ruralRiderController");
 
 // router.post("/", addOrder);
@@ -21,4 +22,5 @@ router.put("/sellerAccept/:id", sellerAccept);
 router.get("/orderDetails/:id", orderDetails);
 router.get("/admin", getUnacceptedVetOrders);
 router.put("/admin/:id", editVetiderOrder);
+router.get("/accepted", getSellerAcceptedTrue);
 module.exports = router;

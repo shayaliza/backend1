@@ -7,6 +7,7 @@ const {
   sellerAccept,
   editBookRiderOrder,
   getUnacceptedBookRiderOrders,
+  getSellerAcceptedTrue,
 } = require("../Controller/bookRiderController");
 
 router.post("/", addOrder);
@@ -15,4 +16,5 @@ router.get("/orderDetails/:id", orderDetails);
 router.put("/sellerAccept/:id", sellerAccept);
 router.get("/admin", getUnacceptedBookRiderOrders);
 router.put("/admin/:id", editBookRiderOrder);
+router.get("/accepted", getSellerAcceptedTrue);
 module.exports = router;
