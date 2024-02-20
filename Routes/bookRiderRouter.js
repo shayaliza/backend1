@@ -12,7 +12,7 @@ const {
 
 router.post("/", addOrder);
 router.get("/", getOrder);
-router.get("/orderDetails/:id", orderDetails);
+router.get("/orderDetails/:id", orderDetails); //tracking order
 router.put("/sellerAccept/:id", sellerAccept);
 router.get("/admin", getUnacceptedBookRiderOrders);
 router.put("/admin/:id", editBookRiderOrder);

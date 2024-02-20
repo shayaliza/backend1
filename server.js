@@ -15,6 +15,7 @@ const BulkParcel = require("./Routes/bulkParcelRouter");
 const RuralRider = require("./Routes/ruralRiderRouter");
 const GotanAdmin = require("./Routes/gotanAdminRouter");
 const Img = require("./Routes/imgRouter");
+const Shop = require("./Models/shopModel");
 //@CORS setup///////////////////
 // const corsOptions = {
 //   origin: [
@@ -89,20 +90,7 @@ app.use("/api/bulkparcel", BulkParcel);
 app.use("/api/veteran", RuralRider);
 app.use("/api/admin", GotanAdmin);
 app.use("/api", Img);
-//total visit
-// let totalVisits = 0;
 
-// app.use((req, res, next) => {
-//   totalVisits++;
-//   next();
-// });
-
-// app.get("/counter", (req, res) => {
-//   res.json({ count: totalVisits });
-// });
-
-// Middleware to increment visit count for every request
-// Create a schema for total visit count
 const totalVisitSchema = new mongoose.Schema({
   count: {
     type: Number,
@@ -139,6 +127,30 @@ app.get("/counter", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+//@shop endpoint
+app.get("/:id/shopCounter", async (req, res) => {
+  try {
+    // console.log("try 1");
+    const shopId = req.params.id;
+    // console.log(shopId, "here");
+
+    const totalVisit = await Shop.findOne({ shopId });
+
+    if (!totalVisit) {
+      // console.log("Shop not found");
+      return res.status(404).json({ error: "Shop not found" });
+    }
+
+    totalVisit.count++;
+    await totalVisit.save();
+
+    res.json({ count: totalVisit.count });
+  } catch (error) {
+    // console.error("Error fetching/ updating total visit count:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //@daily Visit
 let dailyVisits = {};
 

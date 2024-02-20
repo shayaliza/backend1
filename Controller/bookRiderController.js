@@ -1,5 +1,6 @@
 const BookRider = require("../Models/bookRiderModel");
 const BulkParcel = require("../Models/bulkParcelModel");
+const Veteran = require("../Models/ruralRiderModel");
 const nodemailer = require("nodemailer");
 
 getOrder = async (req, res) => {
@@ -73,11 +74,13 @@ const orderDetails = async (req, res) => {
 
     const bookRiderData = await BookRider.findById(id);
     const bulkParcelData = await BulkParcel.findById(id);
+    const VeteranData = await Veteran.findById(id);
 
     // Combine data from both collections
     const responseData = {
       bookRider: bookRiderData,
       bulkParcel: bulkParcelData,
+      veteran: VeteranData,
     };
 
     res.status(200).json(responseData);
