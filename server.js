@@ -15,6 +15,7 @@ const BulkParcel = require("./Routes/bulkParcelRouter");
 const RuralRider = require("./Routes/ruralRiderRouter");
 const GotanAdmin = require("./Routes/gotanAdminRouter");
 const Img = require("./Routes/imgRouter");
+const shopRoutes = require("./Routes/shopRouter");
 const Shop = require("./Models/shopModel");
 //@CORS setup///////////////////
 // const corsOptions = {
@@ -90,6 +91,7 @@ app.use("/api/bulkparcel", BulkParcel);
 app.use("/api/veteran", RuralRider);
 app.use("/api/admin", GotanAdmin);
 app.use("/api", Img);
+app.use("/api", shopRoutes);
 
 const totalVisitSchema = new mongoose.Schema({
   count: {
